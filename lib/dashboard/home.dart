@@ -1,14 +1,16 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tjakep/dashboard/quiz.dart';
+import 'package:tjakep/profile/profile.dart';
+import 'package:tjakep/quiz/quiz.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 class HomeScreen extends StatelessWidget {
   Widget menuIcon({
     @required Size deviceSize,
     @required String text,
     @required IconData icon,
+    @required BuildContext context,
+    @required Widget screen,
   }) {
     return Container(
       height: 60.0,
@@ -18,10 +20,13 @@ class HomeScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(bottom: 10.0),
-            child: Icon(
-              icon,
-              color: Colors.grey[100],
-            ),
+            child: GestureDetector(
+              child : Icon(
+                icon,
+                color: Colors.grey[100],
+              ),
+              onTap: () {Navigator.push(context, MaterialPageRoute(builder: (context) => screen)); print("test");}
+              )
           ),
           Text(
             text,
@@ -72,27 +77,32 @@ class HomeScreen extends StatelessWidget {
           deviceSize: deviceSize,
           icon: Icons.home,
           text: "Home",
+          //screen
         ),
         menuIcon(
           deviceSize: deviceSize,
           icon: Icons.question_answer,
           text: "Quiz",
+          screen: Quiz(),
           
         ),
         menuIcon(
           deviceSize: deviceSize,
           icon: Icons.schedule,
           text: "Schedule",
+          //screen
         ),
         menuIcon(
           deviceSize: deviceSize,
           icon: Icons.school,
           text: "Grades",
+          //screen
         ),
         menuIcon(
           deviceSize: deviceSize,
           icon: Icons.person,
           text: "Profile",
+          screen: ProfileApp()
         ),
       ],
     );
@@ -152,7 +162,8 @@ class HomeScreen extends StatelessWidget {
     @required Size deviceSize,
     @required String src,
     @required String text,
-    @required String pencet
+    @required BuildContext context,
+    @required Widget screen,
   }) {
     return Container(
       width: (deviceSize.width - 45) / 3,
@@ -160,9 +171,11 @@ class HomeScreen extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.only(top: 0.0),
-            child: InkWell(
+            child: GestureDetector(
               child: Image.asset(src, height: 60, width: 60,),
-              onTap: () {print(pencet);},
+              onTap: () async {
+                String cameraScanResult = await scanner.scan();
+                },
             )
           ),
           Text(text),
@@ -246,21 +259,21 @@ class HomeScreen extends StatelessWidget {
                                   src: "res/images/abs-m.png",
                                   text: "Absen masuk",
                                   deviceSize: deviceSize,
-                                  pencet: "masuk"
+                                  
                                 ),
                                 stackedMenuSeparator(),
                                 stackedMenuIcon(
                                   src: "res/images/abs-p.png",
                                   text: "Absen pulang",
                                   deviceSize: deviceSize,
-                                  pencet: "keluar"
+                                  
                                 ),
                                 stackedMenuSeparator(),
                                 stackedMenuIcon(
                                   src: "res/images/history-abs.png",
                                   text: "History",
                                   deviceSize: deviceSize,
-                                  pencet: "history"
+                                  
                                 ),
                               ],
                             ),
